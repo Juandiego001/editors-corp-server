@@ -1,0 +1,19 @@
+ * {
+     font-family: Arial, Helvetica, sans-serif;
+     margin-left: 150px;
+     margin-right: 150px;
+     margin-top: 10;
+     text-align: justify;
+ }
+ 
+ body {
+     box-shadow: 0 0 7px #111;
+     height: 100%;
+     width: 100%;
+     margin: auto;
+     display: block;
+ }
+ 
+ .titulo {
+     text-align: center;
+ }
