@@ -1,23 +1,49 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>registro</title>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <!-- Estilos de Bootstrap -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <!-- Estilos de Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 
-        <!-- FontAwesome -->
-        <script src="https://use.fontawesome.com/b4730f0923.js"></script>
+    <!-- FontAwesome -->
+    <script src="https://use.fontawesome.com/b4730f0923.js"></script>
         <link rel="stylesheet" href="./style/sesion_registro.css">
-    </head>
-    <body>
+
+    <title>Bienvenida | Editor's Corp </title>
+
+    <style>
+        .color-white{
+            color: white;
+        }
+
+        .link-footer:hover{
+            color: white;
+            text-decoration: none;
+        }
+
+    </style>
+</head>
+<body>
+    
+
+    
+
+        <!-- Ejemplo #1 de publicacion -->
         <form action="" class="form-registro">
             <h1>Crea tu cuenta de Editor's Corp</h1>
             <p id="mensaje">¡Gracias por tu interes en unirte a esta comunidad, Game On! Por favor, responde cuidadosamente este formulario. Aclaración: este pre-registro no garantiza la acreditación del trabajo a convenir por el momento</p>
-            <br><p>¿Cual es el nombre de usuario?</p>
+            <h1></h1>
+            <p>ingresa tu correo:</p>
+            <input class="registro" type="text" name="correo" value="" placeholder="correo">
+            <p>cree una contraseña:</p>
+            <input class="registro" type="password" name="contraseña" value="" placeholder="contraseña">
+            <p>verifique la contraseña:</p>
+            <input class="registro" type="password" name="vfcontraseña" value="" placeholder="contraseña">
+            <h1> </h1>
+            <p>¿Cual es el nombre de usuario?</p>
             <input class="registro" type="text" name="usuario" value="" placeholder="Nombre de Usuario">
             <p>información personal</p>
             <input class="registro" type="text" name="Nombre" value="" placeholder="Nombre">
@@ -27,19 +53,59 @@
             <input class="registro" type="text" name="provincia" value="" placeholder="Provincia">
             <p>¿En cuál de nuestros espacios te interesa participar?</p>
             <input type="checkbox" name="check" id="check"><span> Cocina.</span><br>
-            <input type="checkbox" name="check" id="check"><span> Youtube.</span><br>
             <input type="checkbox" name="check" id="check"><span> Arte.</span><br>
-            <input type="checkbox" name="check" id="check"><span> Zona infantil.</span><br>
-            <input type="checkbox" name="check" id="check"><span> Escenario.</span><br>
+            <input type="checkbox" name="check" id="check"><span> Infantil.</span><br>
             <input type="checkbox" name="check" id="check"><span> Videojuegos.</span><br>
-            <input type="checkbox" name="check" id="check"><span> Instaistories y facebook videos.</span><br>
+            <input type="checkbox" name="check" id="check"><span> Shorts.</span><br>
+            <input type="checkbox" name="check" id="check"><span> Viajes.</span><br>
+            <input type="checkbox" name="check" id="check"><span> Músicales.</span><br>
+            <input type="checkbox" name="check" id="check"><span> Recopilaciones.</span><br>
+            <input type="checkbox" name="check" id="check"><span> Montajes.</span><br>
             
             <p>¡Cuéntanos más al respecto!</p>
             <input class="historia" type="text" name="historia" value="" placeholder="type here/escribe aquí ...">
             <input class="botonr" type="submit" value="Registrarse">
         </form>
-       
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
-    </body>
+
+
+      
+    
+
+    <!-- Pie de página -->
+    <footer class="row bg-dark w-100 no-gutters">
+        <!-- Brand -->
+        <h1 class="col-4 d-flex justify-content-center align-items-center">
+            <a href="index.html" class="color-white link-footer">
+                Editor's Corp &copy;
+            </a>
+        </h1>
+        
+
+        <!-- Contenedor de menús: Serán dos menús para abarcar el espacio -->
+        <div class="col d-flex align-items-center">
+            <nav class="col navbar justify-content-center">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a href="perfil-editor.html" class="nav-link link-footer color-white text-center">Búsqueda de editores</a></li>
+                    <li class="nav-item"><a href="tipos-editores.html" class="nav-link link-footer color-white text-center">Tipos de editores</a></li>
+                    <li class="nav-item"><a href="mision_vision.html" class="nav-link link-footer color-white text-center">Misión</a></li>
+                    <li class="nav-item"><a href="mision_vision.html" class="nav-link link-footer color-white text-center">Visión</a></li>
+                </ul>
+            </nav>
+
+            <nav class="col navbar justify-content-center">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a href="" class="nav-link link-footer color-white text-center">Acerca de</a></li>
+                    <li class="nav-item"><a href="terms.html" class="nav-link link-footer color-white text-center">Marco Legal</a></li>
+                    <li class="nav-item"><a href="" class="nav-link link-footer color-white text-center">Contacto</a></li>
+                    <li class="nav-item"><a href="" class="nav-link link-footer color-white text-center">Quiénes somos</a></li>
+                </ul>
+            </nav>
+        </div>
+    </footer>
+
+    <!-- Scripts de Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+</body>
 </html>
