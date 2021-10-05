@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuario | Admin | Editor's Corp</title>
+
+    <!-- Estilos de bootrstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+
+</head>
+<body>
+    <header class="w-100 bg-info text-center h1 text-light py-2 m-0">
+        Admin
+    </header>
+
+    <nav class="navbar navbar-expand-xl bg-success m-0">
+        <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link btn btn-success" href="admin.html">Admin | Inicio</a></li>
+            <li class="nav-item"><a class="nav-link btn btn-success" href="crud-usuario.html">Usuario</a></li>
+            <li class="nav-item"><a class="nav-link btn btn-success" href="crud-publicacion.html">Publicacion</a></li>
+            <li class="nav-item"><a class="nav-link btn btn-success" href="crud-proyecto.html">Proyecto</a></li>
+            <li class="nav-item"><a class="nav-link btn btn-success" href="crud-trato.html">Trato</a></li>
+        </ul>
+    </nav>
+
+    <section class="bg-light w-100">
+        <h1 class="w-100 text-center bg-info text-light py-3 m-0">
+            CRUD | Usuario
+        </h1>
+
+        <!-- Sección para listar usuarios -->
+        <div id="seccionListar" class="w-100 text-center">
+            <h2 class="w-100 py-2 text-center bg-secondary text-light m-0">
+                Listar los usuarios
+            </h2>
+
+            <button id="listarUsuario" class="w-75 btn btn-success">
+                Listar todos los usuarios de la base de datos
+            </button>
+
+            <!-- Div general para cada documento -->
+            <!-- <div class="w-100 my-3 bg-info">
+
+                Id Usuario titulo
+                <h3 class="w-100 text-center text-light py-3 border-light border-bottom">Usuario con Id #23232</h3>
+
+                Div container
+                <div class="w-100 m-0 p-0">
+                    <div class="w-100 row no-gutters py-2 text-light border-bottom border-light">
+                        <h4 class="col m-0">
+                            Nombre
+                        </h4>
+                        <h4 class="col m-0">
+                            Juan Diego
+                        </h4>
+                    </div>
+                    <div class="w-100 row no-gutters py-2 text-light border-bottom border-light">
+                        <h4 class="col m-0">
+                            Nombre
+                        </h4>
+                        <h4 class="col m-0">
+                            Juan Diego
+                        </h4>
+                    </div>
+                </div> -->
+            <!-- </div> -->
+
+            
+        </div>
+
+        <!-- Sección para crear usuarios -->
+        <div class="w-100">
+            <h2 class="w-100 py-2 text-center bg-secondary text-light">
+                Crear un usuario
+            </h2>
+
+            <form id="crearUsuario" class="w-100 text-center py-3">
+                <label for="nickname" class="h5">Nickname</label>&emsp;
+                <input type="text" name="nickname" id="nickname" placeholder="Juan001"/><br><br>
+    
+                <label for="nombre" class="h5">Nombre</label>&emsp;
+                <input type="text" name="nombre" id="nombre" placeholder="Ivan"/><br><br>
+    
+                <label for="apellido" class="h5">Apellido</label>&emsp;
+                <input type="text" name="apellido" id="apellido" placeholder="Castaño"/><br><br>
+    
+                <label for="correo" class="h5">Correo</label>&emsp;
+                <input type="email" name="correo" id="correo" placeholder="manuel@hotmail.com"/><br><br>
+                
+                <label for="contrasena" class="h5">Contraseña</label>&emsp;
+                <input type="password" name="contrasena" id="contrasena" /><br><br>
+
+                <label for="vfContrasena" class="h5">Repetir contraseña</label>&emsp;
+                <input type="password" name="vfContrasena" id="vfContrasena" /><br><br>
+
+                <input class="btn btn-info"  type="submit" value="Crear" />
+            </form>
+        </div>
+        
+
+        <!-- Sección para actualizar usuarios -->
+        <div class="w-100">
+            <h2 class="w-100 py-2 text-center bg-secondary text-light">
+                Actualizar un usuario
+            </h2>
+
+            <form id="actualizarUsuario" class="w-100 text-center py-3">
+                <label for="aNickname" class="h5">Nickname de usuario a actualizar</label>&emsp;
+                <input type="text" name="aNickname" id="aNickname" placeholder="Juan001"/><br><br>
+    
+                <label for="aNombre" class="h5">Nombre</label>&emsp;
+                <input type="text" name="aNombre" id="aNombre" placeholder="Ivan"/><br><br>
+    
+                <label for="aApellido" class="h5">Apellido</label>&emsp;
+                <input type="text" name="aApellido" id="aApellido" placeholder="Castaño"/><br><br>
+    
+                <label for="aCorreo" class="h5">Correo</label>&emsp;
+                <input type="email" name="aCorreo" id="aCorreo" placeholder="manuel@hotmail.com"/><br><br>
+                
+                <label for="aContrasena" class="h5">Contraseña</label>&emsp;
+                <input type="password" name="aContrasena" id="aContrasena" /><br><br>
+
+                <label for="aVfContrasena" class="h5">Repetir contraseña</label>&emsp;
+                <input type="password" name="aVfContrasena" id="aVfContrasena" /><br><br>
+
+                <input class="btn btn-info" type="submit" value="Actualizar" />
+            </form>
+        </div>
+
+
+        <!-- Sección para  eliminar usuarios -->
+        <div class="w-100">
+            <h2 class="w-100 py-2 text-center bg-secondary text-light">
+                Eliminar un usuario
+            </h2>
+
+            <form id="eliminarUsuario" class="w-100 text-center py-3">
+                <label for="eNickname" class="h5">Nickname del usuario a eliminar</label>&emsp;
+                <input type="text" name="eNickname" id="eNickname" placeholder="Juan001"/><br><br>
+
+                <input class="btn btn-info" type="submit" value="Eliminar" />
+            </form>
+        </div>
+    </section>
+
+    <!-- Scripts de bootstrap-->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+
+    <!-- JQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <!-- crud.usuario.js -->
+    <script src="./js/crud.usuario.js"></script>
+</body>
+</html>
