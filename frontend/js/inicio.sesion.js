@@ -2,6 +2,8 @@
 function validarInicio(data){
     if (data == ''){
         alert('Error. Nickname o contraseña incorrectos.');
+    } else {
+        alert('Inicio de sesión exitoso');
     }
 }
 
