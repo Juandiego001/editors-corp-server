@@ -52,6 +52,9 @@
                 <label for="descripcion" class="h5">Descripción</label>&emsp;
                 <input type="text" name="descripcion" id="descripcion" placeholder="Técnicas de edición"/><br><br>
 
+                <label for="adjunto" class="h5">Adjunto</label>&emsp;
+                <input type="file" name="adjunto" id="adjunto" /><br><br>
+
                 <input class="btn btn-info"  type="submit" value="Crear" />
             </form>
         </div>
@@ -89,6 +92,17 @@
 
                 <input class="btn btn-info" type="submit" value="Eliminar" />
             </form>
+        </div>
+
+        <!-- Sección de prueba de video -->
+        <div class="w-100">
+            <h2 class="w-100 py-2 text-center bg-secondary text-light">
+                Prueba de video
+            </h2>
+
+            <video id="videoPlayer" width="650" controls muted="muted" autoplay>
+                <source src="http://localhost:3000/videos/6189a0e8bf1e185c44e6ec36" type="video/mp4" />
+            </video>
         </div>
     </section>
 

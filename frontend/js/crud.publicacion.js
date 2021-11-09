@@ -105,38 +105,100 @@ $(document).ready(() => {
     $('#crearPublicacion').submit(event => {
         let datoTitulo = $('#titulo').val();
         let datoDescripcion = $('#descripcion').val();
+        let datoAdjunto = $('#adjunto')[0].files[0];
+
+        let dataForm = new FormData();
+        dataForm.append('adjunto', datoAdjunto);
+        dataForm.append('titulo', datoTitulo);
+        dataForm.append('descripcion', datoDescripcion);
+
+        // console.log("Data form: ");
+        // console.log(dataForm);
+        // console.log("Valores de Data form: ");
+        // console.log(dataForm.getAll('adjunto'));
+        // console.log("Dato adjunto: ");
+        // console.log(datoAdjunto);
 
         // Se valida que los campos no estén vacíos
         if (datoTitulo != '' && datoDescripcion != ''){
 
-            let dataJson = {
-                titulo: datoTitulo,
-                descripcion: datoDescripcion,
-                valida: true
-            };
+            // console.log($('#crearPublicacion')[0]);
+            // console.log(datoAdjunto);
 
-            $.ajax('http://localhost:3000/publicacion', {
-                method: 'POST',                            
-                data: JSON.stringify(dataJson),
-                contentType: 'application/json',
+            // Prueba
+            // $.ajax('http://localhost:3000/publicacion', {
+            //     method: 'POST',
+            //     data: dataForm,
+            //     cache: false,
+            //     processData: false,
+            //     contentType: false,
+
+            //     // Si todo funciona correctamente
+            //     success: data => {
+            //         alert('El adjunto se ha enviado junto con la publicación con éxito!');
+            //         console.log(data);
+            //     },
+
+            //     // Si ocurre un error
+            //     fail: err => {
+            //         alert('Ocurrió un error al intentar enviar el adjunto.');
+            //         console.log(err);
+            //     }
+            //   });
+
+            // let dataJson = {
+            //     titulo: datoTitulo,
+            //     descripcion: datoDescripcion,
+            //     adjunto: datoAdjunto,
+            //     valida: true
+            // };
+
+            // Se envian los datos sin contemplar el adjunto o archivo
+            // $.ajax('http://localhost:3000/publicacion', {
+            //     method: 'POST',                            
+            //     data: JSON.stringify(dataJson),
+            //     contentType: 'application/json',
+
+            //     // Si todo funciona correctamente
+            //     success: data => {
+            //         alert('La publicacion se ha creado con éxito!');
+            //         console.log(data);
+            //     },
+
+            //     // Si ocurre un error
+            //     fail: err => {
+            //         alert('Ocurrió un error al intentar crear la publicación.');
+            //         console.log(err);
+            //     }
+            // });
+
+            // Se envia el adjunto de la publicacion
+            $.ajax('http://localhost:3000/video', {
+                method: 'POST',
+                data: dataForm,
+                cache: false,
+                contentType: false,
+                processData: false,
 
                 // Si todo funciona correctamente
                 success: data => {
-                    alert('La publicacion se ha creado con éxito!');
+                    alert('El adjunto se ha enviado junto con la publicación con éxito!');
                     console.log(data);
                 },
 
                 // Si ocurre un error
                 fail: err => {
-                    alert('Ocurrió un error al intentar crear la publicación.');
+                    alert('Ocurrió un error al intentar enviar el adjunto.');
                     console.log(err);
                 }
-            });
+              });
+
         } else {
             alert('Error. Por favor ingrese todos los valores.')
         }
-    
+
         event.preventDefault();
+
     });
 
 
@@ -190,6 +252,46 @@ $(document).ready(() => {
                 }
             }
         })
+
+
+
+        // $.get('http://localhost:3000/videos/6189a0e8bf1e185c44e6ec36', (data, err) => {
+
+        //     if (err != 'success') {
+        //         alert('Ha ocurrido un error');
+        //     } else {
+        //         alert('Se han obtenido los videos con éxito!');
+        //         console.log("Intentando obtener los videos");
+        //         console.log(data);
+
+        //         let contenedorVideo = document.createElement('video');
+        //         let sourceContenedorVideo = document.createElement('source');
+        //         sourceContenedorVideo.setAttribute('id', 'sourcePrueba');
+        //     }
+        // })
+
+        $.ajax('http://localhost:3000/videos/6189a0e8bf1e185c44e6ec36', {
+                method: 'GET',
+                headers: {range: 'bytes=0-'},
+
+                // Si todo funciona correctamente
+                success: data => {
+                    alert('Se recibió el video con éxito');
+                    console.log("Intentando obtener los videos");
+                    console.log(typeof data);
+
+                    let contenedorVideo = document.createElement('video');
+                    let sourceContenedorVideo = document.createElement('source');
+                    sourceContenedorVideo.setAttribute('id', 'sourcePrueba');
+                    
+                },
+
+                // Si ocurre un error
+                fail: err => {
+                    alert('Ocurrió un error al intentar recibir el video.');
+                    console.log(err);
+                }
+              });
 
     });
 
