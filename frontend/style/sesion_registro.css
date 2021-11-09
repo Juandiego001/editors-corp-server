@@ -159,4 +159,62 @@ body {
   .divreg1{
     text-decoration-color: blanchedalmond;
   }
+<<<<<<< HEAD
   
+=======
+
+  .insta{
+    position: relative;
+    width: 3%;
+    height: 3%;
+    margin-top: 0%;
+    margin-left: 1%;
+  }
+  
+  .contacto{
+    position: relative;
+    width: 7%;
+    height: 25%;
+    margin-top: 0%;
+    margin-left:-60%;
+  }
+
+  .tel{
+    position: relative;
+    width: 5%;
+    height: 26%;
+    margin-top: 0%;
+    margin-left:-81%;
+  }
+
+  .disc{
+    position: relative;
+    width: 5%;
+    height: 26%;
+    margin-top: 0%;
+    margin-left:-78%;
+  }
+
+  .fb{
+    position: relative;
+    width: 5%;
+    height: 30%;
+    margin-top: 0%;
+    margin-left:-73%;
+  }
+  .twitter{
+    position: relative;
+    width: 5%;
+    height: 26%;
+    margin-top: 0%;
+    margin-left:-78%;
+  }
+
+  .yt{
+    position: relative;
+    width: 5%;
+    height: 26%;
+    margin-top: 0%;
+    margin-left:-78%;
+  }
+>>>>>>> 87cef439e64ddcf9b3c95615160ebf3d1573a192
