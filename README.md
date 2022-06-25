@@ -1,1 +1,2 @@
-# Desarrollo de plataforma web Editor's Corp enfocado en un principio para el curso de Programación en Ambiente Web
+# Editor's Corp
+Este repositorio fue creado para ir desarrollando la planeación del Frontend y con el objetivo de satisfacer lo establecido en el curso de Programación en ambiente web.
