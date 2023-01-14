@@ -1,18 +1,27 @@
 {
-  "name": "editors-corp",
+  "name": "editors-corp-server",
   "version": "1.0.0",
-  "description": "Gestor para Editors Corp",
+  "description": "Este será el repositorio donde se alojará la configuración del servidor en Node.js de\r la plataforma de Editor's Corp.",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
-  "author": "Santiago Henao",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Juandiego001/editors-corp.git"
+  },
+  "keywords": [],
+  "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Juandiego001/editors-corp/issues"
+  },
+  "homepage": "https://github.com/Juandiego001/editors-corp#readme",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "mongodb": "^4.1.4",
-    "mongoose": "^6.0.8",
-    "multer": "^1.4.3"
+    "express": "^4.18.2",
+    "mongoose": "^6.8.3",
+    "multer": "^1.4.5-lts.1"
   }
 }

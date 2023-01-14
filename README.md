@@ -1,2 +1,4 @@
-# Editor's Corp
-Este repositorio fue creado para ir desarrollando la planeación del Frontend y con el objetivo de satisfacer lo establecido en el curso de Programación en ambiente web.
+# Editor's Corp Server
+Este será el repositorio donde se alojará la configuración del servidor en Node.js de
+la plataforma de Editor's Corp.
+
