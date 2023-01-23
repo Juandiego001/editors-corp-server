@@ -12,4 +12,4 @@ const OpinionSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('Opinion', OpinionSchema);
+module.exports = OpinionSchema;

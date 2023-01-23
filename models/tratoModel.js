@@ -45,4 +45,4 @@ const TratoSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('Trato', TratoSchema);
+module.exports = TratoSchema;

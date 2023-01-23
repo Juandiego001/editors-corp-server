@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const Opinion = mongoose.model('Opinion');
+const OpinionSchema = require('../models/opinionModel');
+const Opinion = mongoose.model('Opinion', OpinionSchema);
 
 // Listar todas las opiniones
 exports.list = async () => {

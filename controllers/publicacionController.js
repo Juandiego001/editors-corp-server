@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const Publicacion = mongoose.model('Publicacion');
+const PublicacionSchema = require('../models/publicacionModel');
+const Publicacion = mongoose.model('Publicacion', PublicacionSchema);
 
 // Lista todas las publicaciones
 exports.list = async () => {

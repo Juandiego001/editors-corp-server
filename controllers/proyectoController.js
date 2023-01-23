@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const Proyecto = mongoose.model('Proyecto');
+const ProyectoSchema = require('../models/proyectoModel');
+const Proyecto = mongoose.model('Proyecto', ProyectoSchema);
 
 // Lista todos los proyectos por editor (por nick)
 exports.list = async (nickname) => {

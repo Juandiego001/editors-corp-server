@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const Trato = mongoose.model('Trato');
+const TratoSchema = require('../models/tratoModel');
+const Trato = mongoose.model('Trato', TratoSchema);
 
 // Lista todos los tratos que tiene el usuario (por nickname)
 exports.list = async (nickname) => {

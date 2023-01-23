@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const Usuario = mongoose.model('Usuario');
+const UsuarioSchema = require("../models/usuarioModel");
+const Usuario = mongoose.model('Usuario', UsuarioSchema);
 
 // Métodos principales
 // Listar todos

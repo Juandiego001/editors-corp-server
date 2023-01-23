@@ -3,18 +3,13 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const app = express();
 const path = require('path');
+require('dotenv').config();
+const port = process.env.PORT;
+const DB = process.env.DB;
 const multer = require('multer');
 
-// Models
-const Usuario = require('./models/usuarioModel');
-const Trato = require('./models/tratoModel')
-const Publicacion = require('./models/publicacionModel')
-const Proyecto = require('./models/proyectoModel')
-const Opinion = require('./models/opinionModel')
-
 // Conexión a la base de datos
-const uri = 'mongodb+srv://admin:oracle11g@clusterdb.rqdng.mongodb.net/Editors?retryWrites=true&w=majority';
-mongoose.connect(uri)
+mongoose.connect(DB)
     .then(db => console.log('DB is connected!'))
     .catch(err => console.log(err));
 
@@ -36,6 +31,6 @@ app.use(multer({storage: storage}).single('adjunto'));
 const routes = require('./routers/editors.routes');
 routes(app);
 
-app.listen(3000, () => {
+app.listen(port || 3001, () => {
     console.log('Server on port 3000');
 });

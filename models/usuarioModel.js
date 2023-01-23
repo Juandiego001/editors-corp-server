@@ -6,19 +6,19 @@ const UsuarioSchema = new Schema({
         type: String,
         required: true
     },
-    tipo: {
-        type: Number,
+    categorias: {
+        type: [String],
         required: true
-    },
-    tipoEditor: {
-        type: String,
-        required: false
     },
     biografia: {
         type: String,
         required: false
     },
     nombre: {
+        type: String,
+        required: true
+    },
+    apellido: {
         type: String,
         required: true
     },
@@ -41,4 +41,4 @@ const UsuarioSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('Usuario', UsuarioSchema);
+module.exports = UsuarioSchema;
