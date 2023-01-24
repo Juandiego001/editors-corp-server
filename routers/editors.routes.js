@@ -139,17 +139,6 @@ module.exports = function (app) {
     // Rutas principales para usuario
     app.route('/usuario')
 
-        // Para iniciar sesión
-        .get((req, res) => {
-            cUsuario.logIn(req)
-                .then(data => {
-                    res.send(data);
-                })
-                .catch(err => {
-                    res.send(err)
-                });
-        })
-
         // Para registrarse
         .post((req, res) => {            
             cUsuario.createNew(req.body)
@@ -170,6 +159,14 @@ module.exports = function (app) {
                 .then(data => res.send(data))
                 .catch(err => res.send(err));
         });
+
+    app.route('/usuario-login')
+
+        .post((req, res) => {
+            cUsuario.logIn(req.body)
+                .then(data => res.send(data))
+                .catch(err => res.send(err));
+        })
     
     // Rutas secundarias para usuario
     app.route('/usuario-verificar-nick')

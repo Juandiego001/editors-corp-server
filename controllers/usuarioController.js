@@ -10,7 +10,8 @@ exports.list = async () => {
 
 // Verificar inicio de sesión
 exports.logIn = async (datos) => {
-    return Usuario.find(datos);
+    let theUser = await Usuario.findOne(datos);
+    return theUser;
 }
 
 // Registrarse
