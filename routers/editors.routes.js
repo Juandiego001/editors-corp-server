@@ -175,11 +175,23 @@ module.exports = function (app) {
 
             cUsuario.nickUser(req.query)
                 .then(response => {
-                    res.json({
-                        "nombre": response["nombre"],
-                        "apellido": response["apellido"],
-                        "biografia": response["biografia"]
-                    });
+
+                    console.log(response);
+
+                    response ?
+                        res.json({
+                            "code": 200,
+                            "message": "¡Usuario encontrado con éxito!",
+                            "nombre": response["nombre"],
+                            "apellido": response["apellido"],
+                            "biografia": response["biografia"]
+                        })
+                    :
+                        res.json({
+                            "code": 300,
+                            "message": "El usuario no ha sido encontrado",                            
+                        });
+
                 })
                 .catch(err => {
                     console.log(err);
