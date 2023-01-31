@@ -176,8 +176,6 @@ module.exports = function (app) {
             cUsuario.nickUser(req.query)
                 .then(response => {
 
-                    console.log(response);
-
                     response ?
                         res.json({
                             "code": 200,
@@ -186,10 +184,10 @@ module.exports = function (app) {
                             "apellido": response["apellido"],
                             "biografia": response["biografia"]
                         })
-                    :
+                        :
                         res.json({
                             "code": 300,
-                            "message": "El usuario no ha sido encontrado",                            
+                            "message": "El usuario no ha sido encontrado",
                         });
 
                 })
@@ -200,6 +198,27 @@ module.exports = function (app) {
                         "message": "Ocurrió un error mientras se intentó consultar el usuario mediante el nick en la base de datos."
                     })
                 })
+        })
+
+    app.route('/usuario/busqueda')
+
+        .get((req, res) => {
+            cUsuario.searchEditors()
+                .then(data => {
+                    res.json({
+                        "code": 200,
+                        "message": "Usuarios obtenidos con éxito.",
+                        "data": data
+                    })
+                })
+                .catch(err => {
+                    console.log("Ocurrió un error al intentar buscar los editores.");
+                    console.log(err);
+                    res.json({
+                        "code": 300,
+                        "message": "Ocurrió un error al intentar buscar los editores."
+                    })
+                });
         })
 
     app.route('/usuario-verificar-nick')

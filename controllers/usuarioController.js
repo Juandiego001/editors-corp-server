@@ -35,3 +35,9 @@ exports.updateNick = async (nickname, nuevosDatos) => {
 exports.nickUser = async (nickname) => {
     return await Usuario.findOne(nickname);
 };
+
+exports.searchEditors = async (nickname) => {
+    let foundUsers = await Usuario.find({name: {$regex: '.*' + nickname + '*.'}});
+
+    return foundUsers;
+}
