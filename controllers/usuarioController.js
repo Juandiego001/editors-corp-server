@@ -36,8 +36,8 @@ exports.nickUser = async (nickname) => {
     return await Usuario.findOne(nickname);
 };
 
-exports.searchEditors = async (nickname) => {
-    let foundUsers = await Usuario.find({name: {$regex: '.*' + nickname + '*.'}});
+exports.searchEditors = async (nick) => {
+    let foundUsers = await Usuario.find({nick: {$regex: '.*' + nick + '.*'}});
 
     return foundUsers;
 }

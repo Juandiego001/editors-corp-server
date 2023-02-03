@@ -203,13 +203,20 @@ module.exports = function (app) {
     app.route('/usuario/busqueda')
 
         .get((req, res) => {
-            cUsuario.searchEditors()
+            cUsuario.searchEditors(req.query.nick)
                 .then(data => {
-                    res.json({
-                        "code": 200,
-                        "message": "Usuarios obtenidos con éxito.",
-                        "data": data
-                    })
+                    if (data.length > 0) {
+                        res.json({
+                            "code": 200,
+                            "message": "Usuarios obtenidos con éxito.",
+                            "data": data
+                        })
+                    } else {
+                        res.json({
+                            "code": 201,
+                            "message": "No se encontraron usuarios con el nickname otorgado."
+                        })
+                    }
                 })
                 .catch(err => {
                     console.log("Ocurrió un error al intentar buscar los editores.");
