@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ProyectoSchema = new Schema({
+    nick: {
+        type: String,
+        required: true
+    },
     titulo: {
         type: String,
         required: true
@@ -10,9 +14,9 @@ const ProyectoSchema = new Schema({
         type: String,
         required: true
     },
-    video: {
-        type: Buffer,
-        required: false
+    nombreVideo: {
+        type: String,
+        required: true
     }
 });
 

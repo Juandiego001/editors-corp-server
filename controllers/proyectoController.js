@@ -3,8 +3,8 @@ const ProyectoSchema = require('../models/proyectoModel');
 const Proyecto = mongoose.model('Proyecto', ProyectoSchema);
 
 // Lista todos los proyectos por editor (por nick)
-exports.list = async (nickname) => {
-    return await Proyecto.find(nickname);
+exports.list = async (nick) => {
+    return await Proyecto.find(nick);
 };
 
 // Crear un nuevo proyecto

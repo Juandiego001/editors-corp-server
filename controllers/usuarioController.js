@@ -38,6 +38,10 @@ exports.nickUser = async (nickname) => {
 
 exports.searchEditors = async (nick) => {
     let foundUsers = await Usuario.find({nick: {$regex: '.*' + nick + '.*'}});
-
     return foundUsers;
+}
+
+exports.allData = async (nick) => {
+    let theUser = await Usuario.findOne(nick);
+    return theUser;
 }

@@ -1,8 +1,6 @@
-const mongodb = require('mongodb');
 const fs = require('fs');
-const uri = 'mongodb+srv://admin:oracle11g@clusterdb.rqdng.mongodb.net/Editors?retryWrites=true&w=majority';
 
-module.exports = function (app) {
+module.exports = function (app, upload) {
     const cUsuario = require('../controllers/usuarioController.js');
     const cProyecto = require('../controllers/proyectoController.js');
     const cPublicacion = require('../controllers/publicacionController.js');
@@ -11,20 +9,57 @@ module.exports = function (app) {
 
     // Rutas principales para proyecto
     app.route('/proyecto')
-
         // Listar todos los proyectos de un editor
         .get((req, res) => {
             cProyecto.list(req.query)
-                .then(data => res.send(data))
-                .catch(err => res.send(err));
+                .then(response => {
+                    response ?
+                        res.json({
+                            "code": 200,
+                            "message": "Los proyectos del usuario fueron obtenidos con éxito!",
+                            "data": response
+                        })
+                        :
+                        res.json({
+                            "code": 300,
+                            "message": "Los proyectos del usuario no fueron encontrados"
+                        })
+                })
+                .catch(err => {
+                    res.json({
+                        "code": 500,
+                        "message": "Ocurrió un error al intentar obtener los proyectos del editor"
+                    })
+                });
         })
 
         // Crear un proyecto a un editor
         // Anteriormente, desde el cliente, se valida que el nick exista.
-        .post((req, res) => {
-            cProyecto.createNew(req.body)
-                .then(data => res.send(data))
-                .catch(err => res.send(err));
+        .post(upload.single('video'), async (req, res) => {
+            let { nick, titulo, descripcion } = req.body;
+            let file = req.file;
+            let data = {
+                nick,
+                titulo,
+                descripcion,
+                "nombreVideo": file.filename
+            };
+
+            cProyecto.createNew(data)
+                .then(data => {
+                    res.json({
+                        "code": 200,
+                        "message": "¡El proyecto ha sido subido con éxito!",
+                        "data": true
+                    })
+                })
+                .catch(err => {
+                    res.json({
+                        "code": 500,
+                        "message": "Ocurrió un error al intentar subir el proyecto",
+                        "data": false
+                    })
+                });
         })
 
         // Actualizar el proyecto de un editor
@@ -43,7 +78,6 @@ module.exports = function (app) {
 
     // Rutas secundarias para proyecto
     app.route('/proyecto-verificar-id')
-
         // Verificar existencia de proyecto por id
         .get((req, res) => {
             cProyecto.verifyId(req.query)
@@ -53,7 +87,6 @@ module.exports = function (app) {
 
     // Rutas principales para publicación
     app.route('/publicacion')
-
         // Listar todas las publicaciones
         .get((req, res) => {
             cPublicacion.list()
@@ -105,7 +138,6 @@ module.exports = function (app) {
             cTrato.createNew(req.body)
                 .then(data => res.send(data))
                 .catch(err => res.send(err));
-
         })
 
         // Actualizar un trato 
@@ -138,7 +170,6 @@ module.exports = function (app) {
 
     // Rutas principales para usuario
     app.route('/usuario')
-
         // Para registrarse
         .post((req, res) => {
             cUsuario.createNew(req.body)
@@ -161,11 +192,42 @@ module.exports = function (app) {
         });
 
     app.route('/usuario-login')
-
+        // Iniciar sesión
         .post((req, res) => {
             cUsuario.logIn(req.body)
                 .then(data => res.send(data))
                 .catch(err => res.send(err));
+        })
+
+    app.route('/usuario/all')
+        .get((req, res) => {
+            cUsuario.allData(req.query)
+                .then(response => {
+                    response ?
+                        res.json({
+                            "code": 200,
+                            "message": "¡Usuario encontrado con éxito!",
+                            "correo": response["correo"],
+                            "contrasena": response["contrasena"],
+                            "categorias": response["categorias"],
+                            "nombre": response["nombre"],
+                            "apellido": response["apellido"],
+                            "biografia": response["biografia"]
+                        })
+                        :
+                        res.json({
+                            "code": 300,
+                            "message": "El usuario no ha sido encontrado"
+                        })
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.json({
+                        "code": 500,
+                        "message": "Ocurrió un error mientras se intentaba encontrar todos los datos del usuario."
+                    })
+                })
+
         })
 
     // Rutas secundarias para usuario
@@ -187,7 +249,7 @@ module.exports = function (app) {
                         :
                         res.json({
                             "code": 300,
-                            "message": "El usuario no ha sido encontrado",
+                            "message": "El usuario no ha sido encontrado"
                         });
 
                 })
@@ -229,7 +291,6 @@ module.exports = function (app) {
         })
 
     app.route('/usuario-verificar-nick')
-
         // Verificar si ya existe o no un nickname
         .get((req, res) => {
             cUsuario.nickUser(req.query)
@@ -238,64 +299,11 @@ module.exports = function (app) {
         })
 
     app.route('/usuario-listar')
-
         // Listar todos los usuarios
         .get((req, res) => {
             cUsuario.list()
                 .then(data => res.send(data))
                 .catch(err => res.send(err));
-        })
-
-
-    // Rutas para videos por _id
-    app.route('/videos/:_id')
-
-        // Obtener video por _id
-        .get((req, res) => {
-            mongodb.MongoClient.connect(uri, function (error, client) {
-                if (error) {
-                    res.status(500).json(error);
-                    return;
-                }
-
-                const db = client.db('Editors');
-
-                // GridFS Collection
-                db.collection('fs.files').findOne({}, (err, video) => {
-
-                    if (!video) {
-                        res.status(404).send("No video uploaded!");
-                        return;
-                    }
-
-                    // Create response headers
-                    const videoSize = video.length;
-                    const start = 0;
-                    console.log("START:");
-                    console.log(start);
-                    const end = videoSize - 1;
-
-
-                    const contentLength = end - start + 1;
-                    const headers = {
-                        "Content-Range": `bytes ${start}-${end}/${videoSize}`,
-                        "Accept-Ranges": "bytes",
-                        "Content-Length": contentLength,
-                        "Content-Type": "video/mp4",
-                    };
-
-                    // HTTP Status 206 for Partial Content
-                    res.writeHead(206, headers);
-
-                    const bucket = new mongodb.GridFSBucket(db);
-                    const downloadStream = bucket.openDownloadStreamByName('bigbuck', {
-                        start
-                    });
-
-                    // Finally pipe video to response
-                    downloadStream.pipe(res);
-                });
-            });
         })
 
     // Rutas para videos
