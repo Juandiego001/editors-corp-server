@@ -14,8 +14,8 @@ exports.createNew = async (datos) => {
 };
 
 // Elimina un proyecto por ID
-exports.deleteId = async (Id) => {
-    return await Proyecto.deleteOne(Id);
+exports.deleteId = async (id) => {
+    return await Proyecto.deleteOne(id);
 };
 
 // Actualizar un proyecto por ID

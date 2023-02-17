@@ -50,7 +50,7 @@ module.exports = function (app, upload) {
                     res.json({
                         "code": 200,
                         "message": "¡El proyecto ha sido subido con éxito!",
-                        "data": true
+                        "data": data
                     })
                 })
                 .catch(err => {
@@ -71,9 +71,23 @@ module.exports = function (app, upload) {
 
         // Eliminar el proyecto de un editor
         .delete((req, res) => {
-            cProyecto.deleteId(req.body)
-                .then(data => res.send(data))
-                .catch(err => res.send(err));
+            console.log("Intentando eliminar un proyecto");
+            console.log(req.query);
+
+            cProyecto.deleteId(req.query)
+                .then(data => {
+                    res.json({
+                        "code": 200,
+                        "message": "¡Proyecto eliminado con éxito!",
+                        "data": data
+                    })
+                })
+                .catch(err => {
+                    res.json({
+                        "code": 500,
+                        message: "Ocurrió un error al intentar eliminar el proyecto"
+                    })
+                });
         });
 
     // Rutas secundarias para proyecto

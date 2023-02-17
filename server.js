@@ -60,6 +60,7 @@ mongoose.connect(DB)
 
 // Middleware
 app.use(cors());
+app.use(express.static("public"));
 app.use(express.json());
 
 // Routes
