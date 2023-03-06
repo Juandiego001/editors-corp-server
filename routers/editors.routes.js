@@ -36,30 +36,38 @@ module.exports = function (app, upload) {
         // Crear un proyecto a un editor
         // Anteriormente, desde el cliente, se valida que el nick exista.
         .post(upload.single('video'), async (req, res) => {
-            let { nick, titulo, descripcion } = req.body;
-            let file = req.file;
-            let data = {
-                nick,
-                titulo,
-                descripcion,
-                "nombreVideo": file.filename
-            };
+            try {
+                let { nick, titulo, descripcion } = req.body;
+                let file = req.file;
+                let data = {
+                    nick,
+                    titulo,
+                    descripcion,
+                    "nombreVideo": file.filename
+                };
 
-            cProyecto.createNew(data)
-                .then(data => {
-                    res.json({
-                        "code": 200,
-                        "message": "¡El proyecto ha sido subido con éxito!",
-                        "data": data
+                cProyecto.createNew(data)
+                    .then(data => {
+                        res.json({
+                            "code": 200,
+                            "message": "¡El proyecto ha sido subido con éxito!",
+                            "data": data
+                        })
                     })
+                    .catch(err => {
+                        res.json({
+                            "code": 500,
+                            "message": "Ocurrió un error al intentar subir el proyecto",
+                            "data": false
+                        })
+                    });
+            } catch (error) {
+                res.json({
+                    "code": 500,
+                    "message": "Ocurrió un error al intentar subir el proyecto",
+                    "data": false
                 })
-                .catch(err => {
-                    res.json({
-                        "code": 500,
-                        "message": "Ocurrió un error al intentar subir el proyecto",
-                        "data": false
-                    })
-                });
+            }
         })
 
         // Actualizar el proyecto de un editor
@@ -247,33 +255,33 @@ module.exports = function (app, upload) {
     // Rutas secundarias para usuario
     app.route('/usuario/datos')
 
-        .get((req, res) => {
+        .get(async (req, res) => {
+            try {
+                let userData = await cUsuario.nickUser(req.query);
+                let userVideos = await cProyecto.list(req.query);
 
-            cUsuario.nickUser(req.query)
-                .then(response => {
-
-                    response ?
-                        res.json({
-                            "code": 200,
-                            "message": "¡Usuario encontrado con éxito!",
-                            "nombre": response["nombre"],
-                            "apellido": response["apellido"],
-                            "biografia": response["biografia"]
-                        })
-                        :
-                        res.json({
-                            "code": 300,
-                            "message": "El usuario no ha sido encontrado"
-                        });
-
-                })
-                .catch(err => {
-                    console.log(err);
+                if (userData && userVideos) {
+                    res.json({
+                        "code": 200,
+                        "message": "¡Usuario encontrado con éxito!",
+                        "nombre": userData["nombre"],
+                        "apellido": userData["apellido"],
+                        "biografia": userData["biografia"],
+                        "videos": userVideos
+                    });
+                } else {
                     res.json({
                         "code": 500,
                         "message": "Ocurrió un error mientras se intentó consultar el usuario mediante el nick en la base de datos."
                     })
+                }
+            } catch (error) {
+                console.log(err);
+                res.json({
+                    "code": 500,
+                    "message": "Ocurrió un error mientras se intentó consultar el usuario mediante el nick en la base de datos."
                 })
+            }
         })
 
     app.route('/usuario/busqueda')
