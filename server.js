@@ -5,7 +5,7 @@ const app = express();
 const multer = require('multer');
 const fs = require('fs');
 require('dotenv').config();
-const port = process.env.PORT;
+const port = process.env.PORT || 3001;
 const DB = process.env.DB;
 
 // Configuración de multer
@@ -67,6 +67,6 @@ app.use(express.json());
 const routes = require('./routers/editors.routes');
 routes(app, upload);
 
-app.listen(port || 3001, () => {
-    console.log('Server on port 3000');
+app.listen(port, () => {
+    console.log('Server on port ' + port);
 });

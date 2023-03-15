@@ -32,9 +32,16 @@ exports.updateNick = async (nickname, nuevosDatos) => {
 
 // Métodos adicionales
 // Retornar nombre de usuario
-exports.nickUser = async (nickname) => {
-    return await Usuario.findOne(nickname);
+exports.nickUser = async (nick) => {
+    let nickExists = await Usuario.findOne(nick);
+    return nickExists ? true : false;
 };
+
+// Verificar si existe un correo
+exports.verifyEmail = async (correo) => {
+    let emailExists = await Usuario.findOne(correo);
+    return emailExists ? true : false;
+}
 
 exports.searchEditors = async (nick) => {
     let foundUsers = await Usuario.find({nick: {$regex: '.*' + nick + '.*'}});
