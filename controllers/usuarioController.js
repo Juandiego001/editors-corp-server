@@ -25,13 +25,21 @@ exports.deleteNick = async (nickname) => {
     return await Usuario.deleteOne(nickname);
 };
 
-// Actualizar datos del usuario (por nickname)
-exports.updateNick = async (nickname, nuevosDatos) => {
-    return await Usuario.updateOne(nickname, nuevosDatos);
+// Actualizar datos del usuario con el nickname otorgado y la data nueva
+exports.updateNick = async (nick, data) => {
+    let updateUser = await Usuario.updateOne(nick, data);
+    console.log({updateUser});
+    return updateUser;
 };
 
 // Métodos adicionales
-// Retornar nombre de usuario
+// Retornar los datos de un usuario dado un nick
+exports.nickList = async (nick) => {
+    let theUser = await Usuario.findOne(nick);
+    return theUser;
+}
+
+// Retornar si existe nombre de usuario
 exports.nickUser = async (nick) => {
     let nickExists = await Usuario.findOne(nick);
     return nickExists ? true : false;

@@ -185,7 +185,7 @@ module.exports = function (app, upload) {
                 .then(data => res.send(data))
                 .catch(err => res.send(err));
         })
-    
+
     // Rutas principales para opinion
     app.route('/opinion')
 
@@ -193,7 +193,7 @@ module.exports = function (app, upload) {
         .get((req, res) => {
             cOpinion.list(req.query)
                 .then(data => {
-                    console.log({data});
+                    console.log({ data });
                     res.json({
                         "code": 200,
                         "message": "¡Las opiniones fueron obtenidas con éxito!",
@@ -201,7 +201,7 @@ module.exports = function (app, upload) {
                     });
                 })
                 .catch(err => {
-                    console.log({err});
+                    console.log({ err });
 
                     res.json({
                         "code": 500,
@@ -220,10 +220,42 @@ module.exports = function (app, upload) {
         })
 
         // Para actualizar el usuario
-        .put((req, res) => {
-            cUsuario.updateNick({ nick: req.body.nick }, req.body)
-                .then(data => res.send(data))
-                .catch(err => res.send(err));
+        .put(async (req, res) => {
+            try {
+                console.log({"req.body": req.body});
+
+                let { nick, correo, contrasena, nombre, apellido, newNick, categorias, biografia } = req.body;
+
+                let theData = {
+                    "nick": newNick,
+                    correo,
+                    contrasena,
+                    nombre,
+                    apellido,
+                    categorias,
+                    biografia
+                };
+
+                let response = await cUsuario.updateNick(nick, theData);
+
+                console.log({response});
+                
+                res.json({
+                    "code": 200,
+                    "message": "Respuesta temporal",
+                    "data": true
+                })
+
+
+            } catch (usuarioPutError) {
+                console.log({usuarioPutError});
+
+                res.json({
+                    "code": 500,
+                    "message": "Ocurrió un error en el servidor al intentar actualizar los datos del usuario.",
+                    "data": false
+                });
+            }
         })
 
         // Para eliminar un usuario
@@ -277,7 +309,7 @@ module.exports = function (app, upload) {
 
         .get(async (req, res) => {
             try {
-                let userData = await cUsuario.nickUser(req.query);
+                let userData = await cUsuario.nickList(req.query);
                 let userVideos = await cProyecto.list(req.query);
 
                 if (userData && userVideos) {
@@ -343,7 +375,7 @@ module.exports = function (app, upload) {
                     "message": "¡Se determinó si el nickname existe o no con éxito!",
                     "data": nickExists
                 });
-            } catch(e) {
+            } catch (e) {
                 res.json({
                     "code": 500,
                     "message": "Ocurrió un error mientras se intentaba determinar si el nickname existía o no."
@@ -366,7 +398,7 @@ module.exports = function (app, upload) {
                     "message": "¡Se determinó si el correo existe o no con éxito!",
                     "data": emailExists
                 });
-            } catch(e) {
+            } catch (e) {
                 res.json({
                     "code": 500,
                     "message": "Ocurrió un error mientras se intentaba determinar si el correo existía o no."
