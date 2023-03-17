@@ -1,3 +1,4 @@
+const fs = require('fs');
 
 module.exports = function (app, upload) {
     const cUsuario = require('../controllers/usuarioController.js');
@@ -6,38 +7,52 @@ module.exports = function (app, upload) {
     const cTrato = require('../controllers/tratoController.js');
     const cOpinion = require('../controllers/opinionController.js');
 
+    // Esta función elimina el archivo de video en 
+    // caso de que se haya alcanzado a subir en el servidor
+    // pero que no se haya alcanzado a subir en la base de datos.
+    async function deleteFile(nick, filename) {
+        return new Promise((resolve, reject) => {
+            fs.unlink(`./public/${nick}/${filename}`, (err) => {
+                if (err) throw err;
+                resolve(1);
+            });
+        })
+    }
+
     // Rutas principales para proyecto
     app.route('/proyecto')
         // Listar todos los proyectos de un editor
-        .get((req, res) => {
-            cProyecto.list(req.query)
-                .then(response => {
-                    response ?
-                        res.json({
-                            "code": 200,
-                            "message": "Los proyectos del usuario fueron obtenidos con éxito!",
-                            "data": response
-                        })
-                        :
-                        res.json({
-                            "code": 300,
-                            "message": "Los proyectos del usuario no fueron encontrados"
-                        })
+        .get(async (req, res) => {
+            let response = await cProyecto.list(req.query);
+
+            console.log({ "getProyecto": response });
+
+            response ?
+                res.json({
+                    "code": 200,
+                    "message": "Los proyectos del usuario fueron obtenidos con éxito!",
+                    "data": response
                 })
-                .catch(err => {
-                    res.json({
-                        "code": 500,
-                        "message": "Ocurrió un error al intentar obtener los proyectos del editor"
-                    })
-                });
+                :
+                res.json({
+                    "code": 300,
+                    "message": "Los proyectos del usuario no fueron encontrados"
+                })
+                    .catch(err => {
+                        res.json({
+                            "code": 500,
+                            "message": "Ocurrió un error al intentar obtener los proyectos del editor"
+                        })
+                    });
         })
 
         // Crear un proyecto a un editor
         // Anteriormente, desde el cliente, se valida que el nick exista.
         .post(upload.single('video'), async (req, res) => {
+            let { nick, titulo, descripcion } = req.body;
+            let file = req.file;
+            
             try {
-                let { nick, titulo, descripcion } = req.body;
-                let file = req.file;
                 let data = {
                     nick,
                     titulo,
@@ -45,22 +60,36 @@ module.exports = function (app, upload) {
                     "nombreVideo": file.filename
                 };
 
-                cProyecto.createNew(data)
-                    .then(data => {
-                        res.json({
-                            "code": 200,
-                            "message": "¡El proyecto ha sido subido con éxito!",
-                            "data": data
-                        })
+                let response = await cProyecto.createNew(data);
+
+                if (response) {
+                    res.json({
+                        "code": 200,
+                        "message": "¡El proyecto ha sido subido con éxito!",
+                        "data": response
                     })
-                    .catch(err => {
-                        res.json({
-                            "code": 500,
-                            "message": "Ocurrió un error al intentar subir el proyecto",
-                            "data": false
-                        })
-                    });
-            } catch (error) {
+                } else {
+                    // Como en teoría el primer
+                    // middleware ejecutado es el de guardar archivos,
+                    // entonces, si no se han guardado en la base de datos,
+                    // se eliminan del servidor.
+                    let deletedFile = await deleteFile(nick, file.filename);
+
+                    res.json({
+                        "code": 300,
+                        "message": "Ocurrió un error al intentar subir el proyecto.",
+                        "data": false
+                    })
+
+                }
+            } catch (e) {
+                // Como en teoría el primer
+                // middleware ejecutado es el de guardar archivos,
+                // entonces,
+                // si no se han guardado en la base de datos,
+                // se eliminan del servidor.
+                let deletedFile = await deleteFile(nick, file.filename);
+
                 res.json({
                     "code": 500,
                     "message": "Ocurrió un error al intentar subir el proyecto",
@@ -77,21 +106,33 @@ module.exports = function (app, upload) {
         })
 
         // Eliminar el proyecto de un editor
-        .delete((req, res) => {
-            cProyecto.deleteId(req.query)
-                .then(data => {
+        .delete(async (req, res) => {
+            try {
+                let { nick, filename } = await cProyecto.deleteId(req.query);
+
+                // Si nick y filename fueron encontrados
+                // entonces es porque el proyecto se eliminó
+                // correctamente.
+                if (nick && filename) {
+                    let deletedFile = await deleteFile(nick, filename);
+
                     res.json({
                         "code": 200,
                         "message": "¡Proyecto eliminado con éxito!",
-                        "data": data
+                        "data": true
                     })
-                })
-                .catch(err => {
+                } else {
                     res.json({
-                        "code": 500,
-                        message: "Ocurrió un error al intentar eliminar el proyecto"
+                        "code": 300,
+                        message: "Ocurrió un error al intentar eliminar el proyecto."
                     })
-                });
+                }
+            } catch (e) {
+                res.json({
+                    "code": 500,
+                    "message": "Ocurrió un error al intentar eliminar el proyecto."
+                })
+            }
         });
 
     // Rutas secundarias para proyecto
@@ -222,8 +263,6 @@ module.exports = function (app, upload) {
         // Para actualizar el usuario
         .put(async (req, res) => {
             try {
-                console.log({"req.body": req.body});
-
                 let { nick, correo, contrasena, nombre, apellido, newNick, categorias, biografia } = req.body;
 
                 let theData = {
@@ -236,19 +275,41 @@ module.exports = function (app, upload) {
                     biografia
                 };
 
-                let response = await cUsuario.updateNick(nick, theData);
+                // Si el nick que viene originalmente
+                // es distinto del nick al que se pretende cambiar,
+                // entonces se tendrá que actualizar también el nick para todos los proyectos
+                if (nick != newNick) {
+                    let responseProjectsUpdate = await cProyecto.updateAllFromNick({ nick }, { newNick });
 
-                console.log({response});
-                
-                res.json({
-                    "code": 200,
-                    "message": "Respuesta temporal",
-                    "data": true
-                })
+                    // Si no se actualizaron los proyectos
+                    // es porque pudo haber ocurrido un error.
+                    if (!responseProjectsUpdate) {
+                        res.json({
+                            "code": 301,
+                            "message": "Ocurrió un error al intentar actualizar los proyectos del usuario."
+                        })
+                        return;
+                    }
+                }
 
+                let response = await cUsuario.updateNick({ nick }, theData);
+
+                if (response["modifiedCount"] > 0) {
+                    res.json({
+                        "code": 200,
+                        "message": "¡Los datos del usuario han sido actualizados con éxito!",
+                        "data": true
+                    })
+                } else {
+                    res.json({
+                        "code": 300,
+                        "message": "Ocurrió un error en el servidor al intentar actualizar los datos del usuario.",
+                        "data": true
+                    })
+                }
 
             } catch (usuarioPutError) {
-                console.log({usuarioPutError});
+                console.log({ usuarioPutError });
 
                 res.json({
                     "code": 500,
