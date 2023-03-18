@@ -19,6 +19,18 @@ module.exports = function (app, upload) {
         })
     }
 
+    // Esta función contempla la modificación del nickname de un usuario.
+    // En conscuencia, se tendrá que modificar el nombre de la carpeta,
+    // a los que estaban alojados los proyectos del antigüo nickname.
+    async function renameFolder(nick, newNick) {
+        return new Promise((resolve, reject) => {
+            fs.rename(`./public/${nick}`, `./public/${newNick}`, (err) => {
+                if (err) throw err;
+                resolve(true);
+            })
+        })
+    }
+
     // Rutas principales para proyecto
     app.route('/proyecto')
         // Listar todos los proyectos de un editor
@@ -278,20 +290,39 @@ module.exports = function (app, upload) {
                 // Si el nick que viene originalmente
                 // es distinto del nick al que se pretende cambiar,
                 // entonces se tendrá que actualizar también el nick para todos los proyectos
+                // y opiniones.
                 if (nick != newNick) {
-                    let responseProjectsUpdate = await cProyecto.updateAllFromNick({ nick }, { newNick });
+                    // Primero se debe verificar si el usuario tiene proyectos.
+                    let theProjects = await cProyecto.list({nick});
+                    console.log({theProjects});
 
-                    // Si no se actualizaron los proyectos
-                    // es porque pudo haber ocurrido un error.
-                    if (!responseProjectsUpdate) {
-                        res.json({
-                            "code": 301,
-                            "message": "Ocurrió un error al intentar actualizar los proyectos del usuario."
-                        })
-                        return;
+                    if (theProjects) {
+                        // Se actualizan los proyectos
+                        let responseProjectsUpdate = await cProyecto.updateAllFromNick({ nick }, { newNick });
+                        
+                        // Si no se actualizaron los proyectos
+                        // es porque pudo haber ocurrido un error.
+                        if (!responseProjectsUpdate) {
+                            res.json({
+                                "code": 301,
+                                "message": "Ocurrió un error al intentar actualizar los proyectos del usuario."
+                            })
+                            return;
+                        }
+
+                        // Posteriormente, se debe cambiar el nombre de la carpeta
+                        // del nick antiguo.
+                        let renameFolder = await renameFolder(nick, newNick);
+
+                        // Aquí podría haber una validación para verificar si
+                        // se ha cambiado el nombre de la carpeta que contenía
+                        // los videos del usuario con el antigüo nick, para que
+                        // coincidan con el nuevo nick.
                     }
                 }
 
+                // Una vez los proyectos se han actualizado correctamente,
+                // se procede con la actualización en la base de datos.
                 let response = await cUsuario.updateNick({ nick }, theData);
 
                 if (response["modifiedCount"] > 0) {
@@ -307,7 +338,6 @@ module.exports = function (app, upload) {
                         "data": true
                     })
                 }
-
             } catch (usuarioPutError) {
                 console.log({ usuarioPutError });
 
