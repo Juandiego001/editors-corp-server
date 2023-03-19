@@ -51,7 +51,31 @@ const storage = multer.diskStorage({
     }
 });
 
+const storageUpdate = multer.diskStorage({
+    destination: async (req, file, cb) => {
+        let { nick } = req.body;
+
+        let theDir = `./public/${nick}`;
+        let dirExists = fs.existsSync(theDir);
+        if (!dirExists) {
+            fs.mkdir(theDir, (err) => {
+                if (err) {
+                    console.log("Ocurrió un error al intentar crear la carpeta");
+                    throw new Error("No logró crear la carpeta del editor");
+                }
+            })
+        };
+
+        cb(null, `./public/${nick}`);
+    },
+    filename: async (req, file, cb) => {
+        let { nombreVideo } = req.body;
+        cb(null, nombreVideo);
+    }
+})
+
 const upload = multer({ storage: storage });
+const uploadUpdate = multer({storage: storageUpdate});
 
 // Conexión a la base de datos
 mongoose.connect(DB)
@@ -65,7 +89,7 @@ app.use(express.json());
 
 // Routes
 const routes = require('./routers/editors.routes');
-routes(app, upload);
+routes(app, upload, uploadUpdate);
 
 app.listen(port, () => {
     console.log('Server on port ' + port);

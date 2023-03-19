@@ -29,7 +29,12 @@ exports.deleteNick = async (nickname) => {
 exports.updateNick = async (nick, data) => {
     let updateUser = await Usuario.updateOne(nick, data);
     console.log({updateUser});
-    return updateUser;
+
+    if (updateUser["modifiedCount"] > 0) {
+        return true;
+    } else {
+        return false;
+    }
 };
 
 // Métodos adicionales

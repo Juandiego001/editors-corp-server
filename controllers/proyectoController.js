@@ -35,8 +35,17 @@ exports.deleteId = async (id) => {
 };
 
 // Actualizar un proyecto por ID
-exports.updateId = async (id, nuevosDatos) => {
-    return await Proyecto.updateOne(id, nuevosDatos);
+exports.updateId = async (_id, data) => {
+    console.log({"idFromController": _id});
+    console.log({"dataFromController": data});
+    let projectUpdated = await Proyecto.updateOne(_id, data);
+    console.log({"projectUpdatedFromController": projectUpdated});
+    
+    if (projectUpdated["modifiedCount"] > 0) {
+        return true;
+    } else {
+        return false;
+    }
 };
 
 // Métodos secundarios

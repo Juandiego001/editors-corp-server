@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-module.exports = function (app, upload) {
+module.exports = function (app, upload, uploadUpdate) {
     const cUsuario = require('../controllers/usuarioController.js');
     const cProyecto = require('../controllers/proyectoController.js');
     const cPublicacion = require('../controllers/publicacionController.js');
@@ -111,10 +111,44 @@ module.exports = function (app, upload) {
         })
 
         // Actualizar el proyecto de un editor
-        .put((req, res) => {
-            cProyecto.updateId({ _id: req.body._id }, req.body)
-                .then(data => res.send(data))
-                .catch(err => res.send(err));
+        .put(uploadUpdate.single('video'), async (req, res) => {
+            let { _id, titulo, descripcion } = req.body;
+
+            try {
+                let data = {
+                    titulo,
+                    descripcion
+                };
+
+                console.log({"dataFromRoutes": data});
+
+                let projectUpdated = await cProyecto.updateId({_id}, data);
+                let file = req.file;
+
+                // Si se actualizaron los datos, o el video,
+                // entonces es porque se han actualizado los
+                // proyectos exitosamente.
+                if (projectUpdated || file) {
+                    res.json({
+                        "code": 200,
+                        "message": "¡El proyecto ha sido actualizado con éxito!",
+                        "data": true
+                    });
+                } else {
+                    res.json({
+                        "code": 300,
+                        "message": "Ocurrió un error en la base de datos al intentar actualizar el proyecto.",
+                        "data": false
+                    });
+                } 
+            } catch (errorFromPutProject) {
+                console.log({errorFromPutProject});
+                res.json({
+                    "code": 500,
+                    "message": "Ocurrió un error en el servidor al intentar actualizar el proyecto.",
+                    "data": false
+                })
+            }
         })
 
         // Eliminar el proyecto de un editor
@@ -298,7 +332,7 @@ module.exports = function (app, upload) {
 
                     if (theProjects) {
                         // Se actualizan los proyectos
-                        let responseProjectsUpdate = await cProyecto.updateAllFromNick({ nick }, { newNick });
+                        let responseProjectsUpdate = await cProyecto.updateAllFromNick({ nick }, { "nick": newNick });
                         
                         // Si no se actualizaron los proyectos
                         // es porque pudo haber ocurrido un error.
@@ -312,7 +346,7 @@ module.exports = function (app, upload) {
 
                         // Posteriormente, se debe cambiar el nombre de la carpeta
                         // del nick antiguo.
-                        let renameFolder = await renameFolder(nick, newNick);
+                        let folderRenamed = await renameFolder(nick, newNick);
 
                         // Aquí podría haber una validación para verificar si
                         // se ha cambiado el nombre de la carpeta que contenía
