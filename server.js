@@ -8,7 +8,7 @@ require('dotenv').config();
 const port = process.env.PORT || 3001;
 const DB = process.env.DB;
 
-// Configuración de multer
+// Configuración de multer para subir archivos.
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         let { nick } = req.body;
@@ -51,6 +51,7 @@ const storage = multer.diskStorage({
     }
 });
 
+// Configuración de multer para actualizar archivos.
 const storageUpdate = multer.diskStorage({
     destination: async (req, file, cb) => {
         let { nick } = req.body;

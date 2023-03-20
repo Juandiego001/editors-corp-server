@@ -38,6 +38,18 @@ const UsuarioSchema = new Schema({
     foto: {
         type: Buffer,
         required: false
+    },
+    fechaCreacion: {
+        type: Date,
+        required: true
+    },
+    fechaModificacion: {
+        type: Date,
+        required: false
+    },
+    fechaModificacionNick: {
+        type: Date,
+        required: false
     }
 });
 

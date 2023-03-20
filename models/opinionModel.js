@@ -17,6 +17,14 @@ const OpinionSchema = new Schema({
     descripcion: {
         type: String,
         required: true
+    },
+    fechaCreacion: {
+        type: Date,
+        required: true
+    },
+    fechaModificacion: {
+        type: Date,
+        required: false
     }
 });
 

@@ -10,6 +10,8 @@ exports.list = async (nick) => {
 
 // Crear un nuevo proyecto
 exports.createNew = async (datos) => {
+    datos["fechaCreacion"] = Date.now();
+    datos["fechaModificacion"] = Date.now();
     let newProject = new Proyecto(datos);
     let saveProject = await newProject.save();
     return saveProject;
@@ -36,10 +38,8 @@ exports.deleteId = async (id) => {
 
 // Actualizar un proyecto por ID
 exports.updateId = async (_id, data) => {
-    console.log({"idFromController": _id});
-    console.log({"dataFromController": data});
+    data["fechaModificacion"] = Date.now();
     let projectUpdated = await Proyecto.updateOne(_id, data);
-    console.log({"projectUpdatedFromController": projectUpdated});
     
     if (projectUpdated["modifiedCount"] > 0) {
         return true;

@@ -300,10 +300,42 @@ module.exports = function (app, upload, uploadUpdate) {
     // Rutas principales para usuario
     app.route('/usuario')
         // Para registrarse
-        .post((req, res) => {
-            cUsuario.createNew(req.body)
-                .then(data => res.send(data))
-                .catch(err => res.send(err));
+        .post(async (req, res) => {
+            try {
+                let { nick, correo, contrasena, nombre, apellido, biografia, categorias } = req.body;
+                let data = {
+                    nick,
+                    correo,
+                    contrasena,
+                    nombre,
+                    apellido,
+                    biografia,
+                    categorias
+                };
+
+                let userCreated = await cUsuario.createNew(data);
+
+                if (userCreated) {
+                    res.json({
+                        "code": 200,
+                        "message": "¡El usuario ha sido creado con éxito!",
+                        "data": true
+                    });
+                } else {
+                    res.json({
+                        "code": 300,
+                        "message": "Ocurrió un error al intentar crear el usuario.",
+                        "data": false
+                    })
+                }
+            } catch (errorPostUser) {
+                console.log({errorPostUser});
+                res.json({
+                    "code": 500,
+                    "message": "Ocurrió un error en el servidor al intentar crear un usuario.",
+                    "data": false
+                })
+            }
         })
 
         // Para actualizar el usuario

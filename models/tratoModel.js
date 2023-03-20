@@ -42,6 +42,14 @@ const TratoSchema = new Schema({
     observaciones: {
         type: String,
         required: false
+    },
+    fechaCreacion: {
+        type: Date,
+        required: true
+    },
+    fechaModificacion: {
+        type: Date,
+        required: false
     }
 });
 

@@ -17,6 +17,14 @@ const ProyectoSchema = new Schema({
     nombreVideo: {
         type: String,
         required: true
+    },
+    fechaCreacion: {
+        type: Date,
+        required: true
+    },
+    fechaModificacion: {
+        type: Date,
+        required: false
     }
 });
 

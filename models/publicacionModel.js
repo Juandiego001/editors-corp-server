@@ -17,6 +17,14 @@ const PublicacionSchema = new Schema({
     valida: {
         type: Boolean,
         default: true
+    },
+    fechaCreacion: {
+        type: Date,
+        required: true
+    },
+    fechaModificacion: {
+        type: Date,
+        required: false
     }
 });
 

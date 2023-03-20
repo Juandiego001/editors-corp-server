@@ -16,8 +16,17 @@ exports.logIn = async (datos) => {
 
 // Registrarse
 exports.createNew = async (datos) => {
-    let nuevoUsuario = new Usuario(datos);
-    return await nuevoUsuario.save();
+    datos["fechaCreacion"] = Date.now();
+    datos["fechaModificacion"] = Date.now();
+
+    let newUser = new Usuario(datos);
+    let userCreated = await newUser.save();
+
+    if (userCreated["_id"]) {
+        return true;
+    } else {
+        return false;
+    }
 };
 
 // Eliminar cuenta (por nickname)
