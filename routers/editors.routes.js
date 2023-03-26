@@ -132,7 +132,7 @@ module.exports = function (app, upload, uploadUpdate) {
                     res.json({
                         "code": 200,
                         "message": "¡El proyecto ha sido actualizado con éxito!",
-                        "data": true
+                        "data": projectUpdated
                     });
                 } else {
                     res.json({

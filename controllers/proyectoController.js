@@ -38,11 +38,12 @@ exports.deleteId = async (id) => {
 
 // Actualizar un proyecto por ID
 exports.updateId = async (_id, data) => {
-    data["fechaModificacion"] = Date.now();
+    let fechaModificacion = Date.now();
+    data["fechaModificacion"] = fechaModificacion;
     let projectUpdated = await Proyecto.updateOne(_id, data);
     
     if (projectUpdated["modifiedCount"] > 0) {
-        return true;
+        return fechaModificacion;
     } else {
         return false;
     }
